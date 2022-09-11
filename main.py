@@ -1,3 +1,4 @@
+import copy
 import random
 from collections import defaultdict
 
@@ -17,6 +18,7 @@ for letter in text:
         sentences.append(sentence.split())
         sentence = ""
 
+
 model = defaultdict(lambda: [])
 
 for sentence in sentences:
@@ -27,6 +29,7 @@ for sentence in sentences:
         except:
             pass
 
+
 for (key, value) in model.items():
     words_with_weights = []
     uniq = set(value)
@@ -35,8 +38,8 @@ for (key, value) in model.items():
     model[key] = words_with_weights
 
 
-def generate_text():
-    start = ("в", "итоге")
+def generate_sentence(prefix):
+    start = copy.copy(prefix)
     text = [start[0], start[1]]
     for i in range(20):
         try:
@@ -50,4 +53,13 @@ def generate_text():
     return " ".join(text)
 
 
-print(generate_text())
+def generate_text(count=20):
+    res = []
+    for i in range(count):
+        res.append(generate_sentence(random.choice(list(model.keys()))))
+
+    return res
+
+
+print("\n".join(generate_text()))
+
